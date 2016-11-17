@@ -1,10 +1,14 @@
 module Gibbon
   class APIRequest
-    def initialize(builder: nil)
-      @request_builder = builder
+    def initialize(opts = {})
+      @request_builder = opts.fetch(:builder, nil)
     end
 
-    def post(params: nil, headers: nil, body: nil)
+    def post(opts = {})
+      params  = opts.fetch(:params, nil)
+      headers = opts.fetch(:headers, nil)
+      body    = opts.fetch(:body, nil)
+
       validate_api_key
 
       begin
@@ -17,7 +21,11 @@ module Gibbon
       end
     end
 
-    def patch(params: nil, headers: nil, body: nil)
+    def patch(opts = {})
+      params  = opts.fetch(:params, nil)
+      headers = opts.fetch(:headers, nil)
+      body    = opts.fetch(:body, nil)
+
       validate_api_key
 
       begin
@@ -30,7 +38,11 @@ module Gibbon
       end
     end
 
-    def put(params: nil, headers: nil, body: nil)
+    def put(opts = {})
+      params  = opts.fetch(:params, nil)
+      headers = opts.fetch(:headers, nil)
+      body    = opts.fetch(:body, nil)
+
       validate_api_key
 
       begin
@@ -43,7 +55,10 @@ module Gibbon
       end
     end
 
-    def get(params: nil, headers: nil)
+    def get(opts = {})
+      params  = opts.fetch(:params, nil)
+      headers = opts.fetch(:headers, nil)
+
       validate_api_key
 
       begin
@@ -56,7 +71,10 @@ module Gibbon
       end
     end
 
-    def delete(params: nil, headers: nil)
+    def delete(opts = {})
+      params  = opts.fetch(:params, nil)
+      headers = opts.fetch(:headers, nil)
+
       validate_api_key
 
       begin
@@ -120,7 +138,12 @@ module Gibbon
       raise error_to_raise
     end
 
-    def configure_request(request: nil, params: nil, headers: nil, body: nil)
+    def configure_request(opts = {})
+      request = opts.fetch(:request, nil)
+      params  = opts.fetch(:params, nil)
+      headers = opts.fetch(:headers, nil)
+      body    = opts.fetch(:body, nil)
+
       if request
         request.params.merge!(params) if params
         request.headers['Content-Type'] = 'application/json'

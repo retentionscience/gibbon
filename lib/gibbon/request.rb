@@ -4,7 +4,15 @@ module Gibbon
 
     DEFAULT_TIMEOUT = 30
 
-    def initialize(api_key: nil, api_endpoint: nil, timeout: nil, proxy: nil, faraday_adapter: nil, debug: false, logger: nil)
+    def initialize(opts = {})
+      api_key         = opts.fetch(:api_key, nil)
+      api_endpoint    = opts.fetch(:api_endpoint, nil)
+      timeout         = opts.fetch(:timeout, nil)
+      proxy           = opts.fetch(:proxy, nil)
+      faraday_adapter = opts.fetch(:faraday_adapter, nil)
+      logger          = opts.fetch(:logger, nil)
+      debug           = opts.fetch(:debug, false)
+
       @path_parts = []
       @api_key = api_key || self.class.api_key || ENV['MAILCHIMP_API_KEY']
       @api_key = @api_key.strip if @api_key
@@ -36,31 +44,49 @@ module Gibbon
       @path_parts.join('/')
     end
 
-    def create(params: nil, headers: nil, body: nil)
+    def create(opts = {})
+      params  = opts.fetch(:params, nil)
+      headers = opts.fetch(:headers, nil)
+      body    = opts.fetch(:body, nil)
+
       APIRequest.new(builder: self).post(params: params, headers: headers, body: body)
     ensure
       reset
     end
 
-    def update(params: nil, headers: nil, body: nil)
+    def update(opts = {})
+      params  = opts.fetch(:params, nil)
+      headers = opts.fetch(:headers, nil)
+      body    = opts.fetch(:body, nil)
+
       APIRequest.new(builder: self).patch(params: params, headers: headers, body: body)
     ensure
       reset
     end
 
-    def upsert(params: nil, headers: nil, body: nil)
+    def upsert(opts = {})
+      params  = opts.fetch(:params, nil)
+      headers = opts.fetch(:headers, nil)
+      body    = opts.fetch(:body, nil)
+
       APIRequest.new(builder: self).put(params: params, headers: headers, body: body)
     ensure
       reset
     end
 
-    def retrieve(params: nil, headers: nil)
+    def retrieve(opts = {})
+      params  = opts.fetch(:params, nil)
+      headers = opts.fetch(:headers, nil)
+
       APIRequest.new(builder: self).get(params: params, headers: headers)
     ensure
       reset
     end
 
-    def delete(params: nil, headers: nil)
+    def delete(opts = {})
+      params  = opts.fetch(:params, nil)
+      headers = opts.fetch(:headers, nil)
+
       APIRequest.new(builder: self).delete(params: params, headers: headers)
     ensure
       reset
